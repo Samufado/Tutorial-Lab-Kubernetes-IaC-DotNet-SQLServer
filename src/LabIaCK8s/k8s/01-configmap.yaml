@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-config
+  namespace: iac-tutorialk8s
+data:
+  Db__Server: "sqlserver,1433"
+  Db__Name: "Catalogo"
+  Db__User: "sa"

@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migrate
+  namespace: iac-tutorialk8s
+spec:
+  backoffLimit: 2
+  activeDeadlineSeconds: 300
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migracao
+          image: tutorialk8s-catalogo-api:1.0
+          imagePullPolicy: IfNotPresent
+          args: ["--migrate"]
+          envFrom:
+            - configMapRef:
+                name: api-config
+          env:
+            - name: Db__Password
+              valueFrom:
+                secretKeyRef:
+                  name: banco-secrets
+                  key: SA_PASSWORD
+          resources:
+            requests: {cpu: "100m", memory: "128Mi"}
+            limits: {cpu: "1", memory: "512Mi"}
